@@ -1,4 +1,4 @@
-#!/home/Install/anaconda/bin/python
+#!/c/Python34/python
 
 import sys
 
@@ -44,22 +44,22 @@ class NumJellyEstimator:
     # \param people integer number of people on earth
     def set_world_pop(self, people):
 
-        # NE24: Add a test for type here
- 
-        # NE24: Add a test for value here
-
         # Store the fraction.
+        assert type(people) == int or ((type(people) == long or type(people) == float) and people%1==0) and people >= 0, \
+            "The number of people in the world must be whole and nonnegative."
+        # These test statements are needed because Python uses the long type for large whole numbers and 
+        # float for scientific notation, so these entries must be allowed for.
+        assert people <= 1e11, "The world cannot sustain " + str(people) + "people."
+        
         self.worldPop = people
 
 
     ## Set the fraction of people who love the color pink.
     def set_frac_ppl_loving_pink(self, frac):
 
-        # NE24: Add a test for type here
-
-        # NE24: Add a test for value here
-
         # Store the fraction.
+        assert type(frac) == float and 0.0 <= frac and 1.0 >= frac, "The fraction of people who love pink must be a decimal between 0 and 1"
+
         self.fracPplLovingPink = frac
 
 
@@ -94,6 +94,33 @@ class NumJellyEstimator:
                   +"computing estimate.\n"
 
         # NE24: What other checks might be useful? What is a better way to do this?
+
+        # It would be best to test each variable separately so more in depth feedback
+        # can be given on errors. One could argue that exceptions or assertions should
+        # be used, but simply warning the user of errors allows the user to test
+        # extreme conditions of model if they so choose (e.g. everyone likes pink).
+        # I would rewrite the code to individually test each condition and print warnings
+        # if any proportion is 0 or if the faction of people liking pink or the fraction
+        # of land used for sugar production are 1.
+
+        return int(n)
+
+    def compute_Njelly_est_2(self):
+
+        n = self.fracLand4Sugar * self.worldPop * self.scalingConst / \
+            (1.0 - self.fracPplLovingPink)
+        # If this value is zero, it means that some value didn't get set.
+        if self.fracLand4Sugar == 0:
+            print("WARNING: No land is used for sugar. You may not have set the fraction of land used for sugar.")
+        if self.worldPop == 0:
+            print("WARNING: The population of the world is 0. You may not have set the world population.")
+        if self.fracPplLovingPink == 0:
+            print("WARNING: No one likes pink. You may not have set the fraction of people who like pink.")
+        if self.fracLand4Sugar == 1:
+            print("WARNING: The entire world is used for sugar production. You might have made a mistake in setting \
+                the fraction of land used for sugar production.")
+        if self.fracPplLovingPink == 1:
+            print("WARNING: Everyone likes pink. You might have made a mistake in setting the faction of people who like pink.")
 
         return int(n)
 

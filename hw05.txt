@@ -1,0 +1,21 @@
+1) Kyle Bystrom, Homework 5, 26-03-2016
+
+2) See EstNumJellyBeans.py and TestInput.py
+3) See EstNumJellyBeans.py
+
+4) https://github.com/kylebystrom/JellyBeanCode
+
+5) (See below or meanTests.ipynb)
+
+def mean(num_list):
+    try:
+        return float(sum(num_list))/len(num_list)
+    except ZeroDivisionError :
+        return 0
+    except TypeError as detail :
+        msg = "The algebraic mean of an non-numerical list is undefined. Please provide a list of numbers."
+        raise TypeError(detail.__str__() + "\n" +  msg)
+        
+print mean([2,4,5,3,10,6,8,4,5,5,7]) # no error
+print mean([]) # returns 0 after catching the divide by zero error
+print mean([2,3,4,"puppies"]) # raises a TypeError because "puppies" is not a number
